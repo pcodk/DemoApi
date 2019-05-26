@@ -11,18 +11,22 @@ pool:
 
 
 variables:
-  dockerId: SampensionTest  # Replace with your Docker ID for Docker Hub or the admin user name for the Azure Container Registry
+  dockerId: sampensiontest  # Replace with your Docker ID for Docker Hub or the admin user name for the Azure Container Registry
   imageName: demo_api  # Replace with the name of the image you want to publish
+  dockerUsername: SampensionTest
 
 steps:
+
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
 - script: |
     echo Build docker container
-    docker build -t sampensiontest.azurecr.io/demo_api -f docker/app/Dockerfile .
-    docker login -u $(dockerId) -p $(pswd)
-    docker push sampensiontest.azurecr.io/demo_api
-  env:
-    pswd: $(dockerPassword)     
+    docker build -t $(dockerId).azurecr.io/demo_api -f docker/app/Dockerfile .
+    docker login -u $(dockerUsername) -p $(pswd) $(dockerId).azurecr.io
+    docker push $(dockerId).azurecr.io/demo_api:latest  
   displayName: 'Build and push docker container'
+  env:
+    pswd: $(dockerPassword)
+
+
