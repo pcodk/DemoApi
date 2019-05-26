@@ -23,8 +23,8 @@ steps:
 - script: |
     echo Build docker container
     docker build -t $(dockerId).azurecr.io/demo_api -f docker/app/Dockerfile .
-    docker login -u $(dockerUsername) -p $(pswd) $(dockerId).azurecr.io
-    docker push $(dockerId).azurecr.io/demo_api:latest  
+    docker login -u$(dockerUsername) -p$(pswd) $(dockerId).azurecr.io
+    docker push $(dockerId).azurecr.io/demo_api:latest
   displayName: 'Build and push docker container'
   env:
     pswd: $(dockerPassword)
