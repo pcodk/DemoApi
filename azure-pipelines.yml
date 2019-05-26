@@ -17,15 +17,16 @@ variables:
 
 steps:
 
-- script: echo Hello, world!
+- script: echo Hello, world! $(pswd)
   displayName: 'Run a one-line script'
+  env:
+    pswd: $(testEnv)
 
 - script: |
     echo Build docker container
     docker build -t $(dockerId).azurecr.io/demo_api -f docker/app/Dockerfile .
     echo docker login $(dockerId).azurecr.io -u$(dockerUsername) -p$(pswd)
-    echo "$pswd"
-    docker login $(dockerId).azurecr.io -u$(dockerUsername) -p$(pswd)
+    echo "$pswd" | docker login $(dockerId).azurecr.io -u$(dockerUsername) --password-stdin
     docker push $(dockerId).azurecr.io/demo_api:latest
   displayName: 'Build and push docker container'
   env:
